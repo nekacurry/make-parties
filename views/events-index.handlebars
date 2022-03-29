@@ -1,0 +1,9 @@
+<!-- events-index -->
+<h1>Events</h1>
+<div>
+  {{#each events}}
+    <h2>{{this.title}}</h2>
+    <img class="img-fluid" src="{{this.imgUrl}}" alt="Card image cap" >
+    <p>{{this.desc}}</p>
+  {{/each}}
+</div>
