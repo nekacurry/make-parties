@@ -10,16 +10,25 @@ const models = require('./db/models');
 require('./controllers/events')(app, models);
 require('./controllers/rsvps')(app, models);
 
+const hbs = exphbs.create({
+  handlebars: allowInsecurePrototypeAccess(Handlebars),
+  defaultLayout: 'main',
+  helpers: {
+    if_eq: function (a, b, opts) {
+      if (a === b) {
+        return opts.fn(this);
+      }
+      return opts.inverse(this);
+    },
+  },
+});
+
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
 
 app.use(methodOverride('_method'))
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// Use "main" as our default layout
-app.engine('handlebars', exphbs.engine({ defaultLayout: 'main', handlebars: allowInsecurePrototypeAccess(Handlebars) }));
-// Use handlebars to render
-app.set('view engine', 'handlebars');
-
 
 // Choose a port to listen on
 const port = process.env.PORT || 3000;
