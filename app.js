@@ -1,11 +1,14 @@
 // Initialize express
 const express = require('express')
+const methodOverride = require('method-override')
 const app = express()
 const exphbs = require('express-handlebars');
 const Handlebars = require('handlebars')
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
 const bodyParser = require('body-parser');
 const models = require('./db/models');
+
+app.use(methodOverride('_method'))
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -60,3 +63,25 @@ app.get('/events/:id', (req, res) => {
     console.log(err.message);
   })
 })
+
+// EDIT
+app.get('/events/:id/edit', (req, res) => {
+  models.Event.findByPk(req.params.id).then((event) => {
+    res.render('events-edit', { event: event });
+  }).catch((err) => {
+    console.log(err.message);
+  })
+});
+
+// UPDATE
+app.put('/events/:id', (req, res) => {
+  models.Event.findByPk(req.params.id).then(event => {
+    event.update(req.body).then(event => {
+      res.redirect(`/events/${req.params.id}`);
+    }).catch((err) => {
+      console.log(err);
+    });
+  }).catch((err) => {
+    console.log(err);
+  });
+});
