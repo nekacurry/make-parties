@@ -8,6 +8,7 @@ const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-acce
 const bodyParser = require('body-parser');
 const models = require('./db/models');
 require('./controllers/events')(app, models);
+require('./controllers/rsvps')(app, models);
 
 
 app.use(methodOverride('_method'))
