@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
   Event.associate = function (models) {
     Event.hasMany(models.Rsvp); 
   };
-  //   Event.belongsTo(models.User);
-  // };
+
   return Event;
 };
